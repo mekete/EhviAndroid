@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">EhviNotification</string>
+    <string name="action_settings">Settings</string>
+    <!---->
+    <string translatable="false" name="pref_key_version_code">pref_key_version_code</string>
+    <string translatable="false" name="pref_key_first_time_launch">pref_key_first_time_launch</string>
+    <!---->
+</resources>

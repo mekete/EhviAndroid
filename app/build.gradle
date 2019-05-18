@@ -1,0 +1,86 @@
+apply plugin: 'com.android.application'
+
+android {
+
+    buildToolsVersion "28.0.3"
+    compileSdkVersion 28
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    defaultConfig {
+        applicationId "net.ehvi.android.update"
+        multiDexEnabled true
+        minSdkVersion 16
+        targetSdkVersion 28
+        versionCode 1
+        versionName "1.0"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+
+ext {
+    //supportLibVersion = "28.0.1"
+    googleMaterialLibVersion = "1.0.0"//"""1.0.0-alpha1"
+    androidxVersion = "1.0.0"//"1.0.0-rc02"
+    androidxConstraintLayoutVersion = "2.0.0-alpha4"
+    archComponentsVersion = "1.0.0"
+    espressoVersion = "2.2.2"
+    androidTestVersion = "0.4"
+    hamcrestVersion = "1.3"
+    junitVersion = "4.12"
+    //
+    playServicesVersion = "16.0.0"
+    firebaseVersion = "16.0.8"
+    firebaseUiVersion = "4.3.2"
+    leakCanaryVersion = "1.5.1"
+    iTextVersion = "5.5.10"//don't use updated version!!!
+
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation "androidx.multidex:multidex:2.0.0"
+
+    implementation 'androidx.appcompat:appcompat:1.0.2'
+    implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
+    implementation 'com.google.android.material:material:1.0.0'
+
+    //GooglePlayServiced
+    implementation "com.google.android.gms:play-services-base:${playServicesVersion}"
+    implementation "com.google.android.gms:play-services-auth:${playServicesVersion}"
+    implementation "com.google.android.gms:play-services-maps:${playServicesVersion}"
+    //implementation "com.google.android.gms:play-services-ads-identifier:${playServicesVersion}"
+    //implementation "com.google.android.gms:play-services-appinvite:${playServicesVersion}"
+    //implementation "com.google.android.gms:play-services-gcm:${playServicesVersion}"
+    //implementation "com.google.android.gms:play-services-base:${playServicesVersion}"
+
+    //
+    implementation "com.google.firebase:firebase-core:16.0.8"//         Analytics
+    implementation "com.google.firebase:firebase-firestore:18.2.0"//         Cloud Firestore
+    implementation "com.google.firebase:firebase-storage:16.0.1"//         Storage
+    implementation "com.google.firebase:firebase-auth:16.2.1"//         Authentication
+    implementation "com.google.firebase:firebase-perf:16.2.5"//         Performance Monitoring
+    implementation "com.google.firebase:firebase-functions:16.3.0"
+    implementation "com.google.firebase:firebase-messaging:17.5.0"//         Cloud Messaging
+
+
+    //Firebase helpers
+    implementation "com.firebaseui:firebase-ui-firestore:${firebaseUiVersion}"
+    implementation "com.firebaseui:firebase-ui-auth:${firebaseUiVersion}"
+    implementation "com.firebaseui:firebase-ui-storage:${firebaseUiVersion}"
+
+}
+
+apply plugin: 'com.google.gms.google-services'
+
+

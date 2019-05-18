@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "403747864547",
+    "firebase_url": "https://ehvi-demo.firebaseio.com",
+    "project_id": "ehvi-demo",
+    "storage_bucket": "ehvi-demo.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:403747864547:android:48277b37c9baea02",
+        "android_client_info": {
+          "package_name": "net.ehvi.android.update"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "403747864547-br3ssnhn8st9arbq3ipjfvm7tr02h0ml.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBHVIAVgkMEzP6dHwKVavrsAuiQDIhrGLs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "403747864547-br3ssnhn8st9arbq3ipjfvm7tr02h0ml.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
