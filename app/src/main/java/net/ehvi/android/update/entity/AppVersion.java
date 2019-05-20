@@ -9,9 +9,14 @@ import com.google.firebase.firestore.Exclude;
 
 public class AppVersion extends FirebaseModel {
     private static final String FIRESTORE_DOCUMENT_NAME = "appVersion";
-    Integer currentVersion;
-    Integer latestVersionCode;
-    String latestVersionName;
+//     const versionName = appVersion.versionName;
+//    const versionCode = appVersion.versionCode;
+//    const updateSummary = appVersion.updateSummary;
+//    const updateSeverity = appVersion.updateSeverity;
+//
+//    Integer currentVersion;
+    Integer versionCode;
+    String versionName;
     String updateLevel;//Critical,Minor,BigVersion, Point
     String updateSummary;//Critical,Minor,BigVersion, Point
 
@@ -26,7 +31,7 @@ public class AppVersion extends FirebaseModel {
 
     @Override @Exclude
     public String getTitle() {
-        return "Current Version: " + currentVersion;
+        return "Current Version: " + versionName +" (Code: "+versionCode+")";
     }
     //
 
@@ -35,28 +40,22 @@ public class AppVersion extends FirebaseModel {
         return "Level: " + updateLevel;
     }
 
-    public Integer getCurrentVersion() {
-        return currentVersion;
+
+
+    public Integer getVersionCode() {
+        return versionCode;
     }
 
-    public void setCurrentVersion(Integer currentVersion) {
-        this.currentVersion = currentVersion;
+    public void setVersionCode(Integer versionCode) {
+        this.versionCode = versionCode;
     }
 
-    public Integer getLatestVersionCode() {
-        return latestVersionCode;
+    public String getVersionName() {
+        return versionName;
     }
 
-    public void setLatestVersionCode(Integer latestVersionCode) {
-        this.latestVersionCode = latestVersionCode;
-    }
-
-    public String getLatestVersionName() {
-        return latestVersionName;
-    }
-
-    public void setLatestVersionName(String latestVersionName) {
-        this.latestVersionName = latestVersionName;
+    public void setVersionName(String versionName) {
+        this.versionName = versionName;
     }
 
     public String getUpdateLevel() {
