@@ -42,7 +42,7 @@ public class EhviMessagingService extends FirebaseMessagingService {
             String title = notification.getTitle();
             String body = notification.getBody();
 
-            Log.e(TAG, "onMessageReceived:" +
+            Log.e(TAG, "\n\nonMessageReceived:" +
                     "\ntitle:  "+ title+
                     "\nbody :  "+ body);
 
@@ -87,12 +87,15 @@ public class EhviMessagingService extends FirebaseMessagingService {
      */
     public void showUpdateAvailabilityNotification(String contentTitle, String contentText, long acceptedTimestamp, Map<String, String> data) {
 
-        Intent openActivityIntent = createGooglePlayUpdateIntent(acceptedTimestamp, data);
-
+        //Intent openActivityIntent = createGooglePlayUpdateIntent(acceptedTimestamp, data);
+        Intent openActivityIntent = new Intent(Intent.ACTION_VIEW, Uri.parse( "market://details?id=" +  BuildConfig.APPLICATION_ID));
+        openActivityIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        PendingIntent resultPendingIntent = PendingIntent.getActivity(this, REQUEST_CODE_SENDER, openActivityIntent, 0);
         //
-        TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
-        stackBuilder.addNextIntentWithParentStack(openActivityIntent);
-        PendingIntent resultPendingIntent = stackBuilder.getPendingIntent(REQUEST_CODE_SENDER, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_ONE_SHOT);
+//        TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
+//        stackBuilder.addNextIntentWithParentStack(openActivityIntent);
+//        PendingIntent resultPendingIntent = stackBuilder.getPendingIntent(REQUEST_CODE_SENDER, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_ONE_SHOT);
+
 
 
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this, UPDATE_NOTIFICATION_CHANNEL_ID)//
@@ -114,7 +117,7 @@ public class EhviMessagingService extends FirebaseMessagingService {
 
     private Intent createGooglePlayUpdateIntent(long acceptedTimestamp, Map<String, String> data) {
         String PLAY_URL_APP = "market://details?id=" +  BuildConfig.APPLICATION_ID;
-        Intent openActivityIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(PLAY_URL_APP));
+        Intent openActivityIntent = new Intent(Intent.ACTION_VIEW, Uri.parse( "market://details?id=" +  BuildConfig.APPLICATION_ID));
         return openActivityIntent;
     }
 
