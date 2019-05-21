@@ -131,6 +131,9 @@ public class EhviMessagingService extends FirebaseMessagingService {
 
         Intent googlePlayStoreIntent = new Intent(this, MainActivity.class);
         googlePlayStoreIntent.putExtra(ACTION_OPEN_PLAY_STORE, true);
+
+        Log.e(TAG, " ---- 00000 ---- openGooglePlayIfNeeded: "+"" );
+
         return googlePlayStoreIntent;
 
     }

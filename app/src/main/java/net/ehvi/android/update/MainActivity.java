@@ -32,10 +32,16 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void openGooglePlayIfNeeded() {
+        Log.e(TAG, "111--- openGooglePlayIfNeeded: "+"" );
         Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + BuildConfig.APPLICATION_ID));
-        boolean sampleTrackUid = getIntent().getBooleanExtra(EhviMessagingService.ACTION_OPEN_PLAY_STORE,false);
-        if (sampleTrackUid) {
+        boolean openGooglePlayApp = getIntent().getBooleanExtra(EhviMessagingService.ACTION_OPEN_PLAY_STORE,false);
+        if (openGooglePlayApp) {
+            Log.e(TAG, "2222--- openGooglePlayIfNeeded: "+"" );
+
             startActivity(intent);
+        }else{
+            Log.e(TAG, "3333--- openGooglePlayIfNeeded: "+"" );
+
         }
      }
 
@@ -68,22 +74,22 @@ public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
 
     private void authenticateAnonymously() {
-        FirebaseAuth mAuth = FirebaseAuth.getInstance();
-        FirebaseUser currentUser = mAuth.getCurrentUser();
-        if (currentUser == null) {
-            mAuth.signInAnonymously().addOnCompleteListener(this, task -> {
-                if (task.isSuccessful()) {
-                    // Sign in success, update UI with the signed-in user's information
-                    Log.e(TAG, "signInAnonymously:success");
-                    FirebaseUser user = mAuth.getCurrentUser();
-
-                } else {
-                    // If sign in fails, display a message to the user.
-                    Log.e(TAG, "signInAnonymously:failure", task.getException());
-                    Toast.makeText(MainActivity.this, "Authentication failed.", Toast.LENGTH_SHORT).show();
-
-                }
-            });
-        }
+//        FirebaseAuth mAuth = FirebaseAuth.getInstance();
+//        FirebaseUser currentUser = mAuth.getCurrentUser();
+//        if (currentUser == null) {
+//            mAuth.signInAnonymously().addOnCompleteListener(this, task -> {
+//                if (task.isSuccessful()) {
+//                    // Sign in success, update UI with the signed-in user's information
+//                    Log.e(TAG, "signInAnonymously:success");
+//                    FirebaseUser user = mAuth.getCurrentUser();
+//
+//                } else {
+//                    // If sign in fails, display a message to the user.
+//                    Log.e(TAG, "signInAnonymously:failure", task.getException());
+//                    Toast.makeText(MainActivity.this, "Authentication failed.", Toast.LENGTH_SHORT).show();
+//
+//                }
+//            });
+//        }
     }
 }
