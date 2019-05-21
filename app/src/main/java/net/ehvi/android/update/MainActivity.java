@@ -1,5 +1,7 @@
 package net.ehvi.android.update;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
@@ -11,6 +13,8 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.messaging.FirebaseMessaging;
 
+import net.ehvi.android.update.service.EhviMessagingService;
+
 public class MainActivity extends AppCompatActivity {
 
     public static final String NOTIFICATION_TOPIC_APPLICATION_UPDATE_ANDROID = "TopicAppUpdateAndroid";
@@ -21,20 +25,28 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        authenticateAnonymously();
         //
+        openGooglePlayIfNeeded();
+        authenticateAnonymously();
         setUpApp();
     }
 
+    private void openGooglePlayIfNeeded() {
+        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + BuildConfig.APPLICATION_ID));
+        boolean sampleTrackUid = getIntent().getBooleanExtra(EhviMessagingService.ACTION_OPEN_PLAY_STORE,false);
+        if (sampleTrackUid) {
+            startActivity(intent);
+        }
+     }
+
     private void setUpApp() {
-        subscribeToFirebaseNotificationTopic();
-//        if (SettingsManager.isFirstTimeLaunch(this)) {
-//            subscribeToFirebaseNotificationTopic();
-//            SettingsManager.setVersionCode(BuildConfig.VERSION_CODE, this);
-//            SettingsManager.setFirstTimeLaunch(false, this);
-//        } else if (SettingsManager.getVersionCode(this) != BuildConfig.VERSION_CODE) {
-//            SettingsManager.setVersionCode(BuildConfig.VERSION_CODE, this);
-//        }
+        if (SettingsManager.isFirstTimeLaunch(this)) {
+            subscribeToFirebaseNotificationTopic();
+            SettingsManager.setVersionCode(BuildConfig.VERSION_CODE, this);
+            SettingsManager.setFirstTimeLaunch(false, this);
+        } else if (SettingsManager.getVersionCode(this) != BuildConfig.VERSION_CODE) {
+            SettingsManager.setVersionCode(BuildConfig.VERSION_CODE, this);
+        }
     }
 
     private void subscribeToFirebaseNotificationTopic() {

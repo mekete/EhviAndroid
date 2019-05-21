@@ -1,4 +1,4 @@
-package net.ehvi.android.update;
+package net.ehvi.android.update.service;
 
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
@@ -7,7 +7,6 @@ import android.app.TaskStackBuilder;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.media.RingtoneManager;
-import android.net.Uri;
 import android.os.Build;
 import android.util.Log;
 
@@ -19,36 +18,47 @@ import androidx.core.content.ContextCompat;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
-import net.ehvi.android.update.utility.DateTimeUtil;
+import net.ehvi.android.update.BuildConfig;
+import net.ehvi.android.update.MainActivity;
+import net.ehvi.android.update.R;
+import net.ehvi.android.update.utility.StringUtil;
 
 import java.util.Map;
 
 public class EhviMessagingService extends FirebaseMessagingService {
     private static final String TAG = "EhviMessagingService";
 
-    private final static String UPDATE_NOTIFICATION_CHANNEL_ID = "app_update";
-    private final static String UPDATE_NOTIFICATION_CHANNEL_NAME = "App Update";
+    private static final String UPDATE_NOTIFICATION_CHANNEL_ID = "app_update";
+    private static final String UPDATE_NOTIFICATION_CHANNEL_NAME = "App Update";
+    private static final String ENTITY_FIELD_VERSION_CODE = "versionCode";
+
     public static final int NOTIFICATION_ID = 21;//can be some unique value
     public static final int REQUEST_CODE_SENDER = 0;//can be some unique value
 
+    public static final String ACTION_OPEN_PLAY_STORE = "net.ehvi.android.update.ACTION_OPEN_PLAY_STORE";
+
     @Override
     public void onMessageReceived(@NonNull RemoteMessage remoteMessage) {
+
         createUpdateNotificationChannel();
         Map<String, String> data = remoteMessage.getData();
 
         RemoteMessage.Notification notification = remoteMessage.getNotification();
 
         if (notification != null) {
+
             String title = notification.getTitle();
             String body = notification.getBody();
 
-            Log.e(TAG, "\n\nonMessageReceived:" +
-                    "\ntitle:  "+ title+
-                    "\nbody :  "+ body);
-
             if (data.size() > 0) {//message contains a data payload.
-                //for short time
-                showUpdateAvailabilityNotification(title, body, DateTimeUtil.currentDateTime(), data);
+
+
+                int versionCode = StringUtil.toSafeInteger(data.get(ENTITY_FIELD_VERSION_CODE));
+                if (BuildConfig.VERSION_CODE < versionCode) {
+
+                    //show this notification only on older versions
+                    showUpdateAvailabilityNotification(title, body, data);
+                }
             }
         }
     }
@@ -85,17 +95,14 @@ public class EhviMessagingService extends FirebaseMessagingService {
     /**
      * Create and show a simple notification containing the received FCM message.
      */
-    public void showUpdateAvailabilityNotification(String contentTitle, String contentText, long acceptedTimestamp, Map<String, String> data) {
+    public void showUpdateAvailabilityNotification(String contentTitle, String contentText, Map<String, String> data) {
 
-        //Intent openActivityIntent = createGooglePlayUpdateIntent(acceptedTimestamp, data);
-        Intent openActivityIntent = new Intent(Intent.ACTION_VIEW, Uri.parse( "market://details?id=" +  BuildConfig.APPLICATION_ID));
-        openActivityIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        PendingIntent resultPendingIntent = PendingIntent.getActivity(this, REQUEST_CODE_SENDER, openActivityIntent, 0);
-        //
-//        TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
-//        stackBuilder.addNextIntentWithParentStack(openActivityIntent);
-//        PendingIntent resultPendingIntent = stackBuilder.getPendingIntent(REQUEST_CODE_SENDER, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_ONE_SHOT);
 
+        Intent googlePlayStoreIntent = getPlayStoreIntent();
+
+        TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
+        stackBuilder.addNextIntentWithParentStack(googlePlayStoreIntent);
+        PendingIntent resultPendingIntent = stackBuilder.getPendingIntent(REQUEST_CODE_SENDER, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_ONE_SHOT);
 
 
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this, UPDATE_NOTIFICATION_CHANNEL_ID)//
@@ -115,10 +122,18 @@ public class EhviMessagingService extends FirebaseMessagingService {
         NotificationManagerCompat.from(this).notify(NOTIFICATION_ID, notificationBuilder.build());
     }
 
-    private Intent createGooglePlayUpdateIntent(long acceptedTimestamp, Map<String, String> data) {
-        String PLAY_URL_APP = "market://details?id=" +  BuildConfig.APPLICATION_ID;
-        Intent openActivityIntent = new Intent(Intent.ACTION_VIEW, Uri.parse( "market://details?id=" +  BuildConfig.APPLICATION_ID));
-        return openActivityIntent;
+
+    private Intent getPlayStoreIntent() {
+//        Intent googlePlayStoreIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + BuildConfig.APPLICATION_ID));
+//        googlePlayStoreIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+//        return googlePlayStoreIntent;
+
+
+        Intent googlePlayStoreIntent = new Intent(this, MainActivity.class);
+        googlePlayStoreIntent.putExtra(ACTION_OPEN_PLAY_STORE, true);
+        return googlePlayStoreIntent;
+
     }
+
 
 }

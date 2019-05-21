@@ -39,7 +39,7 @@
             android:resource="@color/colorPrimary" />
 
         <service
-            android:name=".EhviMessagingService"
+            android:name=".service.EhviMessagingService"
             android:exported="false">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />

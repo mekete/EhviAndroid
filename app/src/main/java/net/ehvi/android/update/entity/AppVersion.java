@@ -1,3 +1,5 @@
+
+
 package net.ehvi.android.update.entity;
 
 import com.google.firebase.firestore.CollectionReference;
@@ -9,11 +11,8 @@ import com.google.firebase.firestore.Exclude;
 
 public class AppVersion extends FirebaseModel {
     private static final String FIRESTORE_DOCUMENT_NAME = "appVersion";
-//     const versionName = appVersion.versionName;
-//    const versionCode = appVersion.versionCode;
-//    const updateSummary = appVersion.updateSummary;
-//    const updateSeverity = appVersion.updateSeverity;
-//
+
+    public static final String ENTITY_FIELD_VERSION_CODE = "versionCode";
 //    Integer currentVersion;
     Integer versionCode;
     String versionName;
@@ -29,17 +28,18 @@ public class AppVersion extends FirebaseModel {
 
     }
 
-    @Override @Exclude
+    @Override
+    @Exclude
     public String getTitle() {
-        return "Current Version: " + versionName +" (Code: "+versionCode+")";
+        return "Current Version: " + versionName + " (Code: " + versionCode + ")";
     }
     //
 
-    @Override @Exclude
+    @Override
+    @Exclude
     public String getSubTitle() {
         return "Level: " + updateLevel;
     }
-
 
 
     public Integer getVersionCode() {
